@@ -1,0 +1,97 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Jul 14 02:06:42 2020
+
+@author: margarethoeller
+"""
+
+## interactive game
+
+
+def strategy(hand, topcard):
+    untestedcardsidx = list(range(hand.getLen()))
+    handlist = hand.getallcards()
+    for k in range(hand.getLen()):
+        searchlist = [handlist[j] for j in untestedcardsidx]
+        test = min(searchlist, key = lambda x: x.getvalue())
+        
+        untestedcardsidx.remove(k)
+        if test.getvalue() >= topcard.getvalue():
+            return hand.getCard(k)
+            break
+    return hand.getCard(i)
+
+import Cards
+
+print("Initializing Game...")
+
+Deck1 = Cards.deck()
+#shuffle deck here
+
+print("How Many Players?")
+
+numplayers = 2#input()
+
+Hands = [Cards.hand() for i in range(int(numplayers))]
+
+print("Dealing Cards Now...")
+
+Deck1.deal(5, Hands)
+print(Hands[0])
+topcard  = Deck1.gettop()
+
+j=0
+while Deck1.getLen()>1:
+    i=1
+    j=j+1
+    #print(len(deck), len(hand1) ,len(hand2))
+    for h in range(numplayers):
+        eachhand = Hands[h]
+        if h==0:     #player decides what card to play
+            #print topcard
+            #print hand
+            #ask user for index of card to play
+            playindex = 3#input()
+            played = eachhand.getCard(int(playindex))
+        
+        else:
+        
+
+        
+   #    """ for i in range(len(handvals)):
+  #          if handvals[i] > topcard['value']:
+   #             played = eachplayer.pop(i)
+ #               break
+  #      if len(eachplayer)==len(handvals): #if there is no card greater than top card
+   #         played = eachplayer.pop()"""
+         
+
+            played = strategy(eachhand, topcard)
+        
+            
+        
+        
+        #played = eachplayer.pop();
+        if played.getvalue()>=topcard.getvalue():
+            Deck1.addback(topcard)
+            topcard = played
+        else:
+            eachhand.addCard(played)
+            eachhand.addCard(topcard)
+            topcard = Deck1.gettop()
+        
+        print("Player ",i," played ", played)
+        print("Player ",i,"'s hand: ", eachhand)
+        print("Topcard is :", topcard)
+        i=i+1
+    print("Next Round", "----"*5)
+    
+if len(deck)==0:
+    print("Draw")
+elif len(hand1)==0:
+    print("Player 1 won")
+elif len(hand2)==0:
+    print("Player 2 won")
+else:
+    print("Game went on too long")
